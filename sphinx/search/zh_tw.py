@@ -1,13 +1,15 @@
 # -*- coding: utf-8 -*-
 """
-    sphinx.search.zh_TW
-    ~~~~~~~~~~~~~~~~
+    sphinx.search.zh_tw
+    ~~~~~~~~~~~~~~~~~~~
 
     Traditional Chinese search language: includes routine to split words.
 
-    :copyright: Copyright 2015 by the Sphinx team, see AUTHORS.
+    :copyright: Copyright 2007-2015 by the Sphinx team, see AUTHORS.
     :license: BSD, see LICENSE for details.
 """
+
+from __future__ import print_function
 
 import os
 import re
@@ -239,18 +241,17 @@ class SearchChinese(SearchLanguage):
     """
 
     lang = 'zh_TW'
-    language_name = 'Traditional Chinese'
+    language_name = 'Traditional  Chinese'
     js_stemmer_code = js_porter_stemmer
     stopwords = english_stopwords
     latin1_letters = re.compile(r'\w+(?u)[\u0000-\u00ff]')
 
     def init(self, options):
         if JIEBA:
-            dict = options.get('dict')
-            if os.path.isfile(dict):
-                jieba.set_dictionary(dict)
-                print
-                print "Dictionary path：", dict
+            dict_path = options.get('dict', None)
+            if isinstance(dict_path, basestring) and os.path.isfile(dict_path):
+                jieba.set_dictionary(dict_path)
+                print("Dictionary path: %s" % dict_path)
 
         if CSTEMMER:
             class Stemmer(CStemmer):
